@@ -1,10 +1,7 @@
-const minConfirmed = 10;
-const mymap = L.map("mapid").setView([45, 0], 2);
+const minConfirmed = 50;
+const myMap = L.map("mapid").setView([45, 0], 2);
 
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  tileSize: 512,
-  zoomOffset: -1
-}).addTo(mymap);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(myMap);
 
 data
   .filter(d => d.Confirmed > minConfirmed)
@@ -13,8 +10,9 @@ data
       color: "red",
       fillColor: "red",
       fillOpacity: 0.5,
-      radius: d.Confirmed * 10
-    }).addTo(mymap);
+      // radius: (5000000 * d.Deaths) / (d.Confirmed + d.Deaths + d.Active)
+      radius: d.Deaths * 100
+    }).addTo(myMap);
     marker.bindPopup(
       `<h2>${d.Province_State ||
         d.Country_Region}</h2><p class="popup"><br>Confirmed cases:${
